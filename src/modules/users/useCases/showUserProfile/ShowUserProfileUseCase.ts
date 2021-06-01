@@ -1,3 +1,4 @@
+import { CustomError } from "../../../../utils/CustomError";
 import { User } from "../../model/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
@@ -9,7 +10,11 @@ class ShowUserProfileUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ user_id }: IRequest): User {
-    // Complete aqui
+    const user = this.usersRepository.findById(user_id);
+    if (!user) {
+      throw new CustomError("User not existis!!", 404);
+    }
+    return user;
   }
 }
 
