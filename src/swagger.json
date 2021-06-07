@@ -1,0 +1,233 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SOLID Introduction - Documentation ",
+    "description": "This is a user API",
+    "version": "1.0.0",
+    "contact": {
+      "email": "danilolopesdemoraes@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "User name",
+                  "email": "user.email@test.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User alredy existis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUserError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "List all users",
+        "description": "List all users",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": false,
+            "description": "user_id tipo uuid",
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            }
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retListUsers"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not existis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUserError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Show a user",
+        "description": "Show a user",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user_id tipo uuid",
+            "required": false,
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            }
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUserError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update a user as admin",
+        "description": "Update a user as admin",
+        "operationId": "turnUserAdmin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user_id tipo uuid",
+            "required": false,
+            "schema":{
+              "type": "string",
+              "format": "uuid"
+            }
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/retUserError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "retUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "retListUsers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/retUser"
+      }
+    },
+    "retUserError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "error": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
